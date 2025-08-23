@@ -39,6 +39,19 @@ START_TEST(test_op_0x1NNN_jump_invalid_high)
 }
 END_TEST
 
+// 0x6XNN tests
+START_TEST(test_op_0x6XNN_set)
+{
+    struct chip8_t chip8;
+    uint8_t register_index = 0;
+    init_chip8(&chip8);
+    uint8_t value = 0xAB;
+    int err = op_0x6XNN_set(&chip8, register_index, value);
+    ck_assert_int_eq(err, 0);
+    ck_assert_int_eq(chip8.v_registers[register_index], value);
+}
+END_TEST
+
 // 0x7XNN tests
 START_TEST(test_op_0x7XNN_add_nooverflow)
 {
@@ -96,6 +109,8 @@ int main(void)
     tcase_add_test(tc_core, test_op_0x1NNN_jump_valid);
     tcase_add_test(tc_core, test_op_0x1NNN_jump_invalid_low);
     tcase_add_test(tc_core, test_op_0x1NNN_jump_invalid_high);
+
+    tcase_add_test(tc_core, test_op_0x6XNN_set);
     
     tcase_add_test(tc_core, test_op_0x7XNN_add_nooverflow);
     tcase_add_test(tc_core, test_op_0x7XNN_add_overflow);
