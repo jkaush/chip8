@@ -6,4 +6,6 @@
 
 int op_0x1NNN_jump(struct chip8_t* chip8, uint16_t address);
 
+int op_0x7XNN_add(struct chip8_t* chip8, uint8_t register_index, uint8_t value);
+
 #endif // CORE_OPCODES_H__

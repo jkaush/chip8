@@ -10,3 +10,9 @@ int op_0x1NNN_jump(struct chip8_t* chip8, uint16_t address)
     chip8->program_counter = address;
     return 0;
 }
+
+int op_0x7XNN_add(struct chip8_t* chip8, uint8_t register_index, uint8_t value)
+{
+    chip8->v_registers[register_index] += value;
+    return 0;
+}
