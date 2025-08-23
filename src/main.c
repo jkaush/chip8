@@ -1,8 +1,11 @@
+#include "core/chip8.h"
 #include <stdio.h>
+#include <string.h>
 
 int main()
 {
-	printf("Hello world!\n");
-	return 0;
+    struct chip8_t chip8;
+    init_chip8(&chip8);
+    return 0;
 }
 
