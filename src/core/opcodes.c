@@ -16,3 +16,9 @@ int op_0x7XNN_add(struct chip8_t* chip8, uint8_t register_index, uint8_t value)
     chip8->v_registers[register_index] += value;
     return 0;
 }
+
+int op_0x8XY0_load(struct chip8_t* chip8, uint8_t reg_x, uint8_t reg_y)
+{
+    chip8->v_registers[reg_x] = chip8->v_registers[reg_y];
+    return 0;
+}

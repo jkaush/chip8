@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <check.h>
 
-
+// 0x1NNN tests
 START_TEST(test_op_0x1NNN_jump_valid)
 {
     struct chip8_t chip8;
@@ -16,9 +16,7 @@ START_TEST(test_op_0x1NNN_jump_valid)
     ck_assert_int_eq(chip8.program_counter, 0x300);
 }
 END_TEST
-
 START_TEST(test_op_0x1NNN_jump_invalid_low)
-
 {
     struct chip8_t chip8;
     init_chip8(&chip8);
@@ -29,7 +27,6 @@ START_TEST(test_op_0x1NNN_jump_invalid_low)
     ck_assert_int_eq(chip8.program_counter, 0x200); // Shouldn't change
 }
 END_TEST
-
 START_TEST(test_op_0x1NNN_jump_invalid_high)
 {
     struct chip8_t chip8;
@@ -42,6 +39,7 @@ START_TEST(test_op_0x1NNN_jump_invalid_high)
 }
 END_TEST
 
+// 0x7XNN tests
 START_TEST(test_op_0x7XNN_add_nooverflow)
 {
     struct chip8_t chip8;
@@ -55,7 +53,6 @@ START_TEST(test_op_0x7XNN_add_nooverflow)
     ck_assert_int_eq(chip8.v_registers[register_index], expected);
 }
 END_TEST
-
 START_TEST(test_op_0x7XNN_add_overflow)
 {
     struct chip8_t chip8;
@@ -75,6 +72,21 @@ START_TEST(test_op_0x7XNN_add_overflow)
 }
 END_TEST
 
+// 0x8XY0 tests
+START_TEST(test_op_0x8XY0_load)
+{
+    struct chip8_t chip8;
+    init_chip8(&chip8);
+    uint8_t reg_x = 0x1;
+    uint8_t reg_y = 0x2;
+    chip8.v_registers[reg_y] = 0xAB;
+    int err = op_0x8XY0_load(&chip8, reg_x, reg_y);
+    ck_assert_int_eq(err, 0);
+    ck_assert_int_eq(chip8.v_registers[reg_x], 0xAB);
+    // VY shouldn't change
+    ck_assert_int_eq(chip8.v_registers[reg_y], 0xAB);
+}
+
 
 int main(void)
 {
@@ -87,6 +99,8 @@ int main(void)
     
     tcase_add_test(tc_core, test_op_0x7XNN_add_nooverflow);
     tcase_add_test(tc_core, test_op_0x7XNN_add_overflow);
+
+    tcase_add_test(tc_core, test_op_0x8XY0_load);
     suite_add_tcase(s, tc_core);
 
     SRunner *sr = srunner_create(s);
