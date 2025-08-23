@@ -99,7 +99,18 @@ START_TEST(test_op_0x8XY0_load)
     // VY shouldn't change
     ck_assert_int_eq(chip8.v_registers[reg_y], 0xAB);
 }
+END_TEST
 
+START_TEST(test_op_0xANNN_set_index)
+{
+    struct chip8_t chip8;
+    init_chip8(&chip8);
+    uint16_t address = 0x300;
+    int err = op_0xANNN_set_index(&chip8, address);
+    ck_assert_int_eq(err, 0);
+    ck_assert_int_eq(chip8.index_register, address);
+}
+END_TEST
 
 int main(void)
 {
@@ -116,6 +127,9 @@ int main(void)
     tcase_add_test(tc_core, test_op_0x7XNN_add_overflow);
 
     tcase_add_test(tc_core, test_op_0x8XY0_load);
+
+    tcase_add_test(tc_core, test_op_0xANNN_set_index);
+    
     suite_add_tcase(s, tc_core);
 
     SRunner *sr = srunner_create(s);
