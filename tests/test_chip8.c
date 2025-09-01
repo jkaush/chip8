@@ -30,17 +30,17 @@ int main()
         printf("Stack not zeroed.\n");
         return 1;
     }
-    if (memcmp(chip8.v_registers,
+    if (memcmp(chip8.V,
                expected_memory,
-               sizeof(chip8.v_registers)) != 0) {
+               sizeof(chip8.V)) != 0) {
         printf("V Registers not zeroed.\n");
         return 1;
     }
-    if (chip8.program_counter != 0x200) {
+    if (chip8.pc != 0x200) {
         printf("Program counter incorrectly set.\n");
         return 1;
     }
-    if (chip8.stack_ptr != 0) {
+    if (chip8.sp != 0) {
         printf("Stack pointer incorrectly set.\n");
         return 1;
     }
@@ -52,7 +52,7 @@ int main()
         printf("Sound timer incorrectly set.\n");
         return 1;
     }
-    if (chip8.index_register != 0) {
+    if (chip8.I != 0) {
         printf("Index register incorrectly set.\n");
         return 1;
     }

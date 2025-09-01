@@ -25,7 +25,7 @@ const uint16_t font_offset = 0x50;
 void init_chip8(struct chip8_t* chip8)
 {
     memset(chip8, 0, sizeof(*chip8));
-    chip8->program_counter = 0x200;
+    chip8->pc = 0x200;
     memcpy(chip8->memory + font_offset, &chip8_fontset, sizeof(chip8_fontset));
 }
 

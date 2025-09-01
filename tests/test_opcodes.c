@@ -13,7 +13,7 @@ START_TEST(test_op_0x1NNN_jump_valid)
     uint16_t address = 0x0300;
     int err = op_0x1NNN_jump(&chip8, address);
     ck_assert_int_eq(err, 0);
-    ck_assert_int_eq(chip8.program_counter, 0x300);
+    ck_assert_int_eq(chip8.pc, 0x300);
 }
 END_TEST
 START_TEST(test_op_0x1NNN_jump_invalid_low)
@@ -24,7 +24,7 @@ START_TEST(test_op_0x1NNN_jump_invalid_low)
     uint16_t address = 0x0100;
     int err = op_0x1NNN_jump(&chip8, address);
     ck_assert_int_eq(err, -EC8_FAULT);
-    ck_assert_int_eq(chip8.program_counter, 0x200); // Shouldn't change
+    ck_assert_int_eq(chip8.pc, 0x200); // Shouldn't change
 }
 END_TEST
 START_TEST(test_op_0x1NNN_jump_invalid_high)
@@ -35,7 +35,7 @@ START_TEST(test_op_0x1NNN_jump_invalid_high)
     uint16_t address = 0x1000;
     int err = op_0x1NNN_jump(&chip8, address);
     ck_assert_int_eq(err, -EC8_FAULT);
-    ck_assert_int_eq(chip8.program_counter, 0x200); // Shouldn't change
+    ck_assert_int_eq(chip8.pc, 0x200); // Shouldn't change
 }
 END_TEST
 
@@ -48,7 +48,7 @@ START_TEST(test_op_0x6XNN_set)
     uint8_t value = 0xAB;
     int err = op_0x6XNN_set(&chip8, register_index, value);
     ck_assert_int_eq(err, 0);
-    ck_assert_int_eq(chip8.v_registers[register_index], value);
+    ck_assert_int_eq(chip8.V[register_index], value);
 }
 END_TEST
 
@@ -58,12 +58,12 @@ START_TEST(test_op_0x7XNN_add_nooverflow)
     struct chip8_t chip8;
     uint8_t register_index = 0;
     init_chip8(&chip8);
-    chip8.v_registers[register_index] = 0x10;
+    chip8.V[register_index] = 0x10;
     uint8_t value = 0x20;
     uint8_t expected = 0x30;
     int err = op_0x7XNN_add(&chip8, register_index, value);
     ck_assert_int_eq(err, 0);
-    ck_assert_int_eq(chip8.v_registers[register_index], expected);
+    ck_assert_int_eq(chip8.V[register_index], expected);
 }
 END_TEST
 START_TEST(test_op_0x7XNN_add_overflow)
@@ -73,15 +73,15 @@ START_TEST(test_op_0x7XNN_add_overflow)
     
     uint8_t register_index = 0;
     uint8_t flag_index = 0xF;
-    uint8_t flag = chip8.v_registers[flag_index];
-    chip8.v_registers[register_index] = 0xFF;
+    uint8_t flag = chip8.V[flag_index];
+    chip8.V[register_index] = 0xFF;
     uint8_t value = 0x01;
     uint8_t expected = 0x00; // Wrap around on overflow
     int err = op_0x7XNN_add(&chip8, register_index, value);
     ck_assert_int_eq(err, 0);
-    ck_assert_int_eq(chip8.v_registers[register_index], expected);
+    ck_assert_int_eq(chip8.V[register_index], expected);
     // Overflow should not affect VF
-    ck_assert_int_eq(chip8.v_registers[flag_index], flag);
+    ck_assert_int_eq(chip8.V[flag_index], flag);
 }
 END_TEST
 
@@ -92,12 +92,12 @@ START_TEST(test_op_0x8XY0_load)
     init_chip8(&chip8);
     uint8_t reg_x = 0x1;
     uint8_t reg_y = 0x2;
-    chip8.v_registers[reg_y] = 0xAB;
+    chip8.V[reg_y] = 0xAB;
     int err = op_0x8XY0_load(&chip8, reg_x, reg_y);
     ck_assert_int_eq(err, 0);
-    ck_assert_int_eq(chip8.v_registers[reg_x], 0xAB);
+    ck_assert_int_eq(chip8.V[reg_x], 0xAB);
     // VY shouldn't change
-    ck_assert_int_eq(chip8.v_registers[reg_y], 0xAB);
+    ck_assert_int_eq(chip8.V[reg_y], 0xAB);
 }
 END_TEST
 
@@ -108,7 +108,7 @@ START_TEST(test_op_0xANNN_set_index)
     uint16_t address = 0x300;
     int err = op_0xANNN_set_index(&chip8, address);
     ck_assert_int_eq(err, 0);
-    ck_assert_int_eq(chip8.index_register, address);
+    ck_assert_int_eq(chip8.I, address);
 }
 END_TEST
 

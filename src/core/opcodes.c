@@ -7,25 +7,25 @@ int op_0x1NNN_jump(struct chip8_t* chip8, uint16_t address)
     if (address > 0xFFF || address < 0x200) {
         return -EC8_FAULT; // Invalid address
     }
-    chip8->program_counter = address;
+    chip8->pc = address;
     return 0;
 }
 
 int op_0x6XNN_set(struct chip8_t* chip8, uint8_t register_index, uint8_t value)
 {
-    chip8->v_registers[register_index] = value;
+    chip8->V[register_index] = value;
     return 0;
 }
 
 int op_0x7XNN_add(struct chip8_t* chip8, uint8_t register_index, uint8_t value)
 {
-    chip8->v_registers[register_index] += value;
+    chip8->V[register_index] += value;
     return 0;
 }
 
 int op_0x8XY0_load(struct chip8_t* chip8, uint8_t reg_x, uint8_t reg_y)
 {
-    chip8->v_registers[reg_x] = chip8->v_registers[reg_y];
+    chip8->V[reg_x] = chip8->V[reg_y];
     return 0;
 }
 
@@ -33,6 +33,6 @@ int op_0xANNN_set_index(struct chip8_t* chip8, uint16_t address)
 {
     // Don't check for a valid adress here. We are not accessing memory yet.
     // If index register is out of bounds, it will be caught when used.
-    chip8->index_register = address;
+    chip8->I = address;
     return 0;
 }
