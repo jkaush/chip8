@@ -11,7 +11,9 @@ add_executable(chip8 src/main.c
                      src/core/chip8.c
                      src/core/opcodes.h
                      src/core/opcodes.c
-                     src/core/errors.h)
+                     src/core/errors.h
+                     src/platform/platform.h
+                     src/platform/platform.c)
 target_include_directories(chip8 PUBLIC src/)
 target_link_libraries(chip8 PRIVATE SDL3::SDL3)
 
