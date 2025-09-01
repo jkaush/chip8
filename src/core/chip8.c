@@ -20,12 +20,9 @@ const uint8_t chip8_fontset[80] = {
     0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
 
-const uint16_t font_offset = 0x50;
-
-void init_chip8(struct chip8_t* chip8)
-{
+void chip8_initialize(struct chip8_t* chip8) {
+    const uint16_t font_offset = 0x50;
     memset(chip8, 0, sizeof(*chip8));
-    chip8->pc = 0x200;
+    chip8->pc = PC_START;
     memcpy(chip8->memory + font_offset, &chip8_fontset, sizeof(chip8_fontset));
 }
-

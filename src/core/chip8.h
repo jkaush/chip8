@@ -7,6 +7,7 @@
 #define MEMORY_SIZE 4096
 #define STACK_DEPTH 16
 #define V_REGISTER_COUNT 16
+#define PC_START 0x200
 
 #define CHIP8_WIDTH 64
 #define CHIP8_HEIGHT 32
@@ -34,6 +35,6 @@ struct chip8_t {
     uint8_t screen[CHIP8_WIDTH][CHIP8_HEIGHT];
 };
 
-void init_chip8(struct chip8_t* chip8);
+void chip8_initialize(struct chip8_t* chip8);
 
 #endif // CORE_CHIP8_H__
