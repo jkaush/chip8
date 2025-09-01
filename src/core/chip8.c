@@ -1,4 +1,6 @@
 #include "core/chip8.h"
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 
 const uint8_t chip8_fontset[80] = {
@@ -25,4 +27,26 @@ void chip8_initialize(struct chip8_t* chip8) {
     memset(chip8, 0, sizeof(*chip8));
     chip8->pc = PC_START;
     memcpy(chip8->memory + font_offset, &chip8_fontset, sizeof(chip8_fontset));
+}
+
+bool chip8_load_rom(struct chip8_t* chip8, const char* filename) {
+    FILE* rom = fopen(filename, "rb");
+    if (!rom) {
+        fprintf(stderr, "Failed to open ROM: %s\n", filename);
+        return false;
+    }
+
+    fseek(rom, 0, SEEK_END);
+    long rom_size = ftell(rom);
+    rewind(rom);
+
+    if (rom_size > (MEMORY_SIZE - PC_START)) {
+        fprintf(stderr, "Error: ROM file too large!\n");
+        fclose(rom);
+        return false;
+    }
+
+    fread(chip8->memory + PC_START, 1, rom_size, rom);
+    fclose(rom);
+    return true;
 }

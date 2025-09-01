@@ -7,6 +7,12 @@ int main()
 {
     struct chip8_t chip8;
     chip8_initialize(&chip8);
+    const char* rom_path = "roms/ibm.ch8";
+    if (!chip8_load_rom(&chip8, rom_path)) {
+        return 1;
+    }
+
+    printf("Loaded ROM: %s\n", rom_path);
 
     // struct platform_t* platform = create_platform("CHIP-8 Emulator", CHIP8_WIDTH, CHIP8_HEIGHT, 10);
     // if (!platform) {

@@ -36,5 +36,6 @@ struct chip8_t {
 };
 
 void chip8_initialize(struct chip8_t* chip8);
+bool chip8_load_rom(struct chip8_t* chip8, const char* filename);
 
 #endif // CORE_CHIP8_H__

@@ -5,7 +5,7 @@
 int main()
 {
     struct chip8_t chip8;
-    init_chip8(&chip8);
+    chip8_initialize(&chip8);
     static const uint8_t expected_memory[4096] = {0};
     static const uint16_t expected_stack[16] = {0};
     if (memcmp(chip8.memory, expected_memory, font_offset) != 0) {

@@ -8,7 +8,7 @@
 START_TEST(test_op_0x1NNN_jump_valid)
 {
     struct chip8_t chip8;
-    init_chip8(&chip8);
+    chip8_initialize(&chip8);
     // Example: Jump to address 0x300
     uint16_t address = 0x0300;
     int err = op_0x1NNN_jump(&chip8, address);
@@ -19,7 +19,7 @@ END_TEST
 START_TEST(test_op_0x1NNN_jump_invalid_low)
 {
     struct chip8_t chip8;
-    init_chip8(&chip8);
+    chip8_initialize(&chip8);
     // Example: Invalid jump to address below 0x200
     uint16_t address = 0x0100;
     int err = op_0x1NNN_jump(&chip8, address);
@@ -30,7 +30,7 @@ END_TEST
 START_TEST(test_op_0x1NNN_jump_invalid_high)
 {
     struct chip8_t chip8;
-    init_chip8(&chip8);
+    chip8_initialize(&chip8);
     // Example: Invalid jump to address above 0xFFF
     uint16_t address = 0x1000;
     int err = op_0x1NNN_jump(&chip8, address);
@@ -44,7 +44,7 @@ START_TEST(test_op_0x6XNN_set)
 {
     struct chip8_t chip8;
     uint8_t register_index = 0;
-    init_chip8(&chip8);
+    chip8_initialize(&chip8);
     uint8_t value = 0xAB;
     int err = op_0x6XNN_set(&chip8, register_index, value);
     ck_assert_int_eq(err, 0);
@@ -57,7 +57,7 @@ START_TEST(test_op_0x7XNN_add_nooverflow)
 {
     struct chip8_t chip8;
     uint8_t register_index = 0;
-    init_chip8(&chip8);
+    chip8_initialize(&chip8);
     chip8.V[register_index] = 0x10;
     uint8_t value = 0x20;
     uint8_t expected = 0x30;
@@ -69,7 +69,7 @@ END_TEST
 START_TEST(test_op_0x7XNN_add_overflow)
 {
     struct chip8_t chip8;
-    init_chip8(&chip8);
+    chip8_initialize(&chip8);
     
     uint8_t register_index = 0;
     uint8_t flag_index = 0xF;
@@ -89,7 +89,7 @@ END_TEST
 START_TEST(test_op_0x8XY0_load)
 {
     struct chip8_t chip8;
-    init_chip8(&chip8);
+    chip8_initialize(&chip8);
     uint8_t reg_x = 0x1;
     uint8_t reg_y = 0x2;
     chip8.V[reg_y] = 0xAB;
@@ -104,7 +104,7 @@ END_TEST
 START_TEST(test_op_0xANNN_set_index)
 {
     struct chip8_t chip8;
-    init_chip8(&chip8);
+    chip8_initialize(&chip8);
     uint16_t address = 0x300;
     int err = op_0xANNN_set_index(&chip8, address);
     ck_assert_int_eq(err, 0);
