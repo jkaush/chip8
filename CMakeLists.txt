@@ -15,3 +15,14 @@ add_executable(chip8 src/main.c
                      src/platform/platform.c)
 target_include_directories(chip8 PUBLIC src/)
 target_link_libraries(chip8 PRIVATE SDL3::SDL3)
+
+enable_testing()
+
+add_executable(run_tests
+    src/core/chip8.c
+    src/core/opcodes.c
+    tests/test.c
+)
+
+target_include_directories(run_tests PRIVATE src tests/vendor)
+add_test(NAME chip8_core_tests COMMAND run_tests)
