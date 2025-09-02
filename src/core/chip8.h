@@ -9,8 +9,8 @@
 #define V_REGISTER_COUNT 16
 #define PC_START 0x200
 
-#define CHIP8_WIDTH 64
-#define CHIP8_HEIGHT 32
+#define GFX_WIDTH 64
+#define GFX_HEIGHT 32
 
 extern const uint8_t chip8_fontset[80];
 extern const uint16_t font_offset;
@@ -29,13 +29,12 @@ struct chip8_t {
 
     // Input/Output
     uint8_t keypad[16]; // Hex-based keypad (0x0-0xF)
-    uint32_t gfxbuffer[CHIP8_WIDTH * CHIP8_HEIGHT]; // Graphics buffer
+    uint32_t gfxbuffer[GFX_WIDTH * GFX_HEIGHT]; // Graphics buffer
     bool draw_flag; // Indicates if the screen needs to be redrawn
-
-    uint8_t screen[CHIP8_WIDTH][CHIP8_HEIGHT];
 };
 
 void chip8_initialize(struct chip8_t* chip8);
 bool chip8_load_rom(struct chip8_t* chip8, const char* filename);
+void chip8_emulate_cycle(struct chip8_t* chip8);
 
 #endif // CORE_CHIP8_H__

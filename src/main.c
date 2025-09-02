@@ -12,27 +12,22 @@ int main()
         return 1;
     }
 
-    printf("Loaded ROM: %s\n", rom_path);
+    struct platform_t* platform = create_platform("CHIP-8 Emulator", GFX_WIDTH, GFX_HEIGHT, 10);
+    if (!platform) {
+        printf("Failed to create platform\n");
+        return 1;
+    }
 
-    // struct platform_t* platform = create_platform("CHIP-8 Emulator", CHIP8_WIDTH, CHIP8_HEIGHT, 10);
-    // if (!platform) {
-    //     printf("Failed to create platform\n");
-    //     return 1;
-    // }
+    bool running = true;
+    while (running) {
+        running = process_events(platform);
+        chip8_emulate_cycle(&chip8);
+        if (chip8.draw_flag) {
+            update_screen(platform, chip8.gfxbuffer);
+        }
+        SDL_Delay(100);
+    }
 
-    // // Draw a line
-    // for (int i = 0; i < CHIP8_WIDTH; i++) {
-    //     chip8.screen[i][15] = 1;
-    // }
-
-    // bool running = true;
-    // while (running) {
-    //     running = process_events(platform);
-    //     update_screen(platform, chip8.screen);
-    //     SDL_Delay(16);
-    // }
-
-    // destroy_platform(platform);
+    destroy_platform(platform);
     return 0;
 }
-

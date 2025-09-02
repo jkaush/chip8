@@ -1,3 +1,4 @@
+#include "core/chip8.h"
 #include "platform.h"
 #include <SDL3/SDL.h>
 
@@ -83,18 +84,9 @@ bool process_events(struct platform_t* platform)
     return true;
 }
 
-void update_screen(struct platform_t* platform, const uint8_t display[64][32])
-{
-    // TODO: Get rid of the magic numbers
-    uint32_t pixels[64 * 32];
-    for (int y = 0; y < 32; y++) {
-        for (int x = 0; x < 64; x++) {
-            pixels[y * 64 + x] = display[x][y] ? 0xFFFFFFFF : 0xFF000000;
-        }
-    }
+void update_screen(struct platform_t* platform, const uint32_t gfxbuffer[GFX_WIDTH * GFX_HEIGHT]) {
 
-    SDL_UpdateTexture(platform->texture, NULL, pixels, 64 * sizeof(uint32_t));
-    SDL_RenderClear(platform->renderer);
+    SDL_UpdateTexture(platform->texture, NULL, gfxbuffer, GFX_WIDTH * sizeof(uint32_t));
     SDL_RenderTexture(platform->renderer, platform->texture, NULL, NULL);
     SDL_RenderPresent(platform->renderer);
 }
