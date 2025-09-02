@@ -18,11 +18,11 @@ target_link_libraries(chip8 PRIVATE SDL3::SDL3)
 
 enable_testing()
 
-add_executable(run_tests
+add_executable(run_unit_tests
+    tests/unit/core/test_opcodes_unit.c
     src/core/chip8.c
     src/core/opcodes.c
-    tests/test.c
 )
-
-target_include_directories(run_tests PRIVATE src tests/vendor)
-add_test(NAME chip8_core_tests COMMAND run_tests)
+target_include_directories(run_unit_tests PRIVATE src tests/vendor)
+add_test(NAME chip8_unit_tests COMMAND run_unit_tests)
+set_tests_properties(chip8_unit_tests PROPERTIES LABELS "unit")
